@@ -48,6 +48,8 @@ app.get('/api/block-height', async (req, res) => {
 
     }
 
+
+   
   } catch (err) {
 
     console.error('Database query error:', err);

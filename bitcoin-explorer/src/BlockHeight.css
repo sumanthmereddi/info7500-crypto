@@ -28,6 +28,8 @@
 
 }
  
+
+
 .table-container {
 
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for the table */
@@ -68,7 +70,7 @@ th, td {
 
   background-color: rgba(51, 51, 51, 0.5);
 
-  color: #fffa6a;
+  color: #f9f33c;
 
   padding: 10px 0;
 
@@ -106,4 +108,5 @@ th, td {
 
   }
 
+  
 }

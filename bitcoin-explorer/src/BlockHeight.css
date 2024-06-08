@@ -1,0 +1,109 @@
+.block-height-container {
+
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  flex-direction: column; /* Added to stack elements vertically */
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  background-image: url('./wp12529020-4k-crypto-wallpapers.jpg');
+
+  background-size: cover;
+
+  background-position: center;
+
+  background-repeat: no-repeat;
+
+  color: white; /* To make text readable over the background */
+
+  text-align: center; /* Center align text */
+
+}
+ 
+.table-container {
+
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for the table */
+
+  padding: 20px;
+
+  border-radius: 10px;
+
+}
+ 
+table {
+
+  border: 5px solid black;
+
+  border-collapse: collapse;
+
+  width: auto; /* Adjust the width to fit content */
+
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background for the table */
+
+  color: rgb(7, 0, 0); /* Black text color */
+
+}
+ 
+th, td {
+
+  border: 8px solid black;
+
+  padding: 8px;
+
+}
+ 
+.scrolling-headline {
+
+  width: 100%;
+
+  overflow: hidden;
+
+  background-color: rgba(51, 51, 51, 0.5);
+
+  color: #fffa6a;
+
+  padding: 10px 0;
+
+  position: absolute;
+
+  top: 0;
+
+  z-index: 10;
+
+  text-align: center;
+
+}
+ 
+.scrolling-headline div {
+
+  display: inline-block;
+
+  white-space: nowrap;
+
+  animation: scroll 20s linear infinite; /* Increased duration to 30 seconds */
+
+}
+ 
+@keyframes scroll {
+
+  0% {
+
+    transform: translateX(100%);
+
+  }
+
+  100% {
+
+    transform: translateX(-100%);
+
+  }
+
+}

@@ -1,6 +1,6 @@
-Project : Bitcoin Explorer
-Course : INFO 7500
-Collaborators : Sumanth Mereddi, Kshama Aditi Lethakula
+# Project : Bitcoin Explorer
+
+# Collaborators : Sumanth Mereddi, Kshama Aditi Lethakula
 
 Step 2: Ingestion Program in Rust
 
@@ -10,7 +10,7 @@ To install Rust, use the rustup installer:
 
 macOS:
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+### `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
 Windows:
 
@@ -122,7 +122,7 @@ Step 4: Dockerizing the Application
 1) Create a Dockerfile with the following content:
 
 # Use the official Rust image as a parent image
-FROM rust:latest
+FROM rust:latest#
 
 # Set the working directory
 WORKDIR /usr/src/app

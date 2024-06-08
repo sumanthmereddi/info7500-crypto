@@ -6,6 +6,8 @@ import './BlockHeight.css';  // Import the CSS file
  
 interface BlockData {
 
+
+  
   id: number;
 
   block_height: number;

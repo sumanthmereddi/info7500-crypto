@@ -1,4 +1,4 @@
-# Bitcoin Explorer Project
+# INFO 7500 Bitcoin Explorer Project
 
 This project is a Bitcoin Explorer application that displays the latest block data from a Bitcoin node. The application is composed of a frontend, backend, database, and a Rust-based ingestion service. The services are containerized using Docker.
 

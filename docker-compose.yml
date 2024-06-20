@@ -1,89 +1,54 @@
-version: '3'
- 
+version: '3.8'
+
 services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - db
+      - bitcoin_core
+
+  frontend:
+    build:
+      context: ./bitcoin-explorer
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+
+  bitcoin_ingestion:
+    build:
+      context: ./bitcoin_ingestion
+    depends_on:
+      - db
+      - bitcoin_core
+    entrypoint: ./wait-for-it.sh db:5432 -- ./target/release/bitcoin_ingestion
 
   db:
-
-    image: postgres:13
-
+    image: postgres:14
     environment:
-
-      POSTGRES_USER: bit
-
+      POSTGRES_USER: user
       POSTGRES_PASSWORD: bit
-
       POSTGRES_DB: bitcoin_explorer
-
-    ports:
-
-      - "5432:5432"
-
     volumes:
+      - pgdata:/var/lib/postgresql/data
 
-      - db_data:/var/lib/postgresql/data
- 
-  backend:
-
-    build: ./backend
-
-    depends_on:
-
-      - db
-
-    environment:
-
-      - PGUSER=bit
-
-      - PGPASSWORD=bit
-
-      - PGDATABASE=bitcoin_explorer
-
-      - PGHOST=db
-
-      - PGPORT=5432
-
+  bitcoin_core:
+    image: ruimarinho/bitcoin-core:latest
     ports:
-
-      - "4000:4000"
-
-    command: ["node", "index.js"]
- 
-  frontend:
-
-    build: ./bitcoin-explorer
-
-    ports:
-
-      - "80:80"
-
-    depends_on:
-
-      - backend
- 
-  rust_ingestion:
-
-    build:
-
-      context: ./bitcoin_ingestion
-
-      dockerfile: Dockerfile
-
-    depends_on:
-
-      - db
-
+      - "8332:8332"
+      - "8333:8333"
+    volumes:
+      - bitcoin_data:/bitcoin
     environment:
+      BITCOIN_NETWORK: regtest
+      BITCOIN_RPCUSER: user
+      BITCOIN_RPCPASSWORD: password
 
-      - PGUSER=bit
-
-      - PGPASSWORD=bit
-
-      - PGDATABASE=bitcoin_explorer
-
-      - PGHOST=db
-
-      - PGPORT=5432
- 
 volumes:
-
-  db_data:
+  pgdata:
+  bitcoin_data:

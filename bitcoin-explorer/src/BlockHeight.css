@@ -1,112 +1,77 @@
-.block-height-container {
-
-  position: relative;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  flex-direction: column; /* Added to stack elements vertically */
-
-  width: 100%;
-
-  min-height: 100vh;
-
-  background-image: url('./wp12529020-4k-crypto-wallpapers.jpg');
-
-  background-size: cover;
-
-  background-position: center;
-
-  background-repeat: no-repeat;
-
-  color: white; /* To make text readable over the background */
-
-  text-align: center; /* Center align text */
-
-}
- 
-
-
-.table-container {
-
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for the table */
-
-  padding: 20px;
-
-  border-radius: 10px;
-
-}
- 
-table {
-
-  border: 5px solid black;
-
-  border-collapse: collapse;
-
-  width: auto; /* Adjust the width to fit content */
-
-  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background for the table */
-
-  color: rgb(7, 0, 0); /* Black text color */
-
-}
- 
-th, td {
-
-  border: 8px solid black;
-
-  padding: 8px;
-
-}
- 
-.scrolling-headline {
-
-  width: 100%;
-
-  overflow: hidden;
-
-  background-color: rgba(51, 51, 51, 0.5);
-
-  color: #f9f33c;
-
-  padding: 10px 0;
-
-  position: absolute;
-
-  top: 0;
-
-  z-index: 10;
-
-  text-align: center;
-
-}
- 
-.scrolling-headline div {
-
-  display: inline-block;
-
-  white-space: nowrap;
-
-  animation: scroll 20s linear infinite; /* Increased duration to 30 seconds */
-
-}
- 
-@keyframes scroll {
-
-  0% {
-
-    transform: translateX(100%);
-
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #1e1e1e;
+    color: #fff;
   }
-
-  100% {
-
-    transform: translateX(-100%);
-
-  }
-
   
-}
+  .container {
+    width: 100%;
+    padding: 20px;
+    color: #fff;
+    background-color: #5f0e03;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #f39c12;
+    font-family: 'Lobster', cursive;
+  }
+  
+  .subtitle {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 2em;
+    color: #f39c12;
+    font-family: 'Lobster', cursive;
+  }
+  
+  .block-data,
+  .off-chain-metrics {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+  }
+  
+  .blocks-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+  }
+  
+  .blocks-table th,
+  .blocks-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .blocks-table th {
+    background-color: #444;
+    color: white;
+  }
+  
+  .chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 1.2em;
+    color: #f39c12;
+  }
+  
+  /* Change the cursor to a Bitcoin symbol */
+  body, .container, .block-data, .off-chain-metrics, .blocks-table, .chart-container {
+    cursor: url('./cursor.png'), auto; /* Ensure to use the correct path to your image */
+  }

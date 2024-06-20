@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS blocks (
+    id SERIAL PRIMARY KEY,
+    block_height INT NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -17,6 +17,11 @@ const pool = new Pool({
 
 app.use(cors());
 
+// Root URL handler
+app.get('/', (req, res) => {
+  res.send('Welcome to the Bitcoin Explorer API');
+});
+
 app.get('/api/block-height', async (req, res) => {
   try {
     const result = await pool.query('SELECT id, block_height, timestamp FROM blocks ORDER BY id DESC LIMIT 1');

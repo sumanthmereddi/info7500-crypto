@@ -1,77 +1,77 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #1e1e1e;
-    color: #fff;
-  }
-  
-  .container {
-    width: 100%;
-    padding: 20px;
-    color: #fff;
-    background-color: #5f0e03;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-  }
-  
-  .title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    color: #f39c12;
-    font-family: 'Lobster', cursive;
-  }
-  
-  .subtitle {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 2em;
-    color: #f39c12;
-    font-family: 'Lobster', cursive;
-  }
-  
-  .block-data,
-  .off-chain-metrics {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-  }
-  
-  .blocks-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 1.1em;
-  }
-  
-  .blocks-table th,
-  .blocks-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  .blocks-table th {
-    background-color: #444;
-    color: white;
-  }
-  
-  .chart-container {
-    position: relative;
-    height: 400px;
-    width: 100%;
-    margin: 20px 0;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 1.2em;
-    color: #f39c12;
-  }
-  
-  /* Change the cursor to a Bitcoin symbol */
-  body, .container, .block-data, .off-chain-metrics, .blocks-table, .chart-container {
-    cursor: url('./cursor.png'), auto; /* Ensure to use the correct path to your image */
-  }
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+  color: #fff;
+  background-color: #5f0e03;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  color: #f39c12;
+  font-family: 'Lobster', cursive;
+}
+
+.subtitle {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 2em;
+  color: #f39c12;
+  font-family: 'Lobster', cursive;
+}
+
+.block-data,
+.off-chain-metrics {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.blocks-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+}
+
+.blocks-table th,
+.blocks-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.blocks-table th {
+  background-color: #444;
+  color: white;
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2em;
+  color: #f39c12;
+}
+
+/* Change the cursor to a Bitcoin symbol */
+body, .container, .block-data, .off-chain-metrics, .blocks-table, .chart-container {
+  cursor: url('./cursor.png'), auto; /* Ensure to use the correct path to your image */
+}

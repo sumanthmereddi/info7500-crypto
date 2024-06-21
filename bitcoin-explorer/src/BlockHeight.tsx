@@ -15,8 +15,10 @@ interface OffChainMetrics {
   marketCap: number;
   socialMediaMentions: number;
   percentChange: number;
+  open: number;
   high: number;
   low: number;
+  close: number;
 }
 
 const BlockHeight: React.FC = () => {
@@ -173,8 +175,10 @@ const BlockHeight: React.FC = () => {
           <p>Bitcoin Price: ${offChainMetrics.price?.toFixed(2)}</p>
           <p>Bitcoin Market Cap: ${offChainMetrics.marketCap?.toFixed(2)}</p>
           <p>Percentage Change: {offChainMetrics.percentChange?.toFixed(2)}%</p>
+          <p>24h Open: ${offChainMetrics.open?.toFixed(2)}</p>
           <p>24h High: ${offChainMetrics.high?.toFixed(2)}</p>
           <p>24h Low: ${offChainMetrics.low?.toFixed(2)}</p>
+          <p>24h Close: ${offChainMetrics.close?.toFixed(2)}</p>
           <p>Social Media Mentions: {offChainMetrics.socialMediaMentions}</p>
         </div>
       ) : (

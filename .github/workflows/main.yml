@@ -62,7 +62,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Add DigitalOcean Droplet to known hosts
-        run: ssh-keyscan -H <YOUR_DROPLET_IP> >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H 104.131.65.252 >> ~/.ssh/known_hosts
 
       - name: Deploy to Droplet
         run: |

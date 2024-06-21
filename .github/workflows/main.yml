@@ -65,13 +65,24 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
 
-      - name: Install docker-compose and Deploy to Droplet
+      - name: Increase SSH timeout and Install docker-compose
         run: |
           doctl compute ssh bitcoin --ssh-command "
+          echo 'ClientAliveInterval 60' | sudo tee -a /etc/ssh/sshd_config &&
+          echo 'ClientAliveCountMax 120' | sudo tee -a /etc/ssh/sshd_config &&
+          sudo service ssh restart &&
           sudo apt-get update &&
-          sudo apt-get install -y docker-compose &&
+          sudo apt-get install -y docker-compose"
+
+      - name: Pull Docker images
+        run: |
+          doctl compute ssh bitcoin --ssh-command "
           docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest &&
           docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest &&
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest"
+
+      - name: Deploy to Droplet
+        run: |
+          doctl compute ssh bitcoin --ssh-command "
           cd /root/info7500-crypto-1 &&
           docker-compose up -d"

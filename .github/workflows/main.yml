@@ -57,13 +57,21 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add DigitalOcean Droplet to known hosts
-        run: ssh-keyscan -H 104.131.65.252 >> ~/.ssh/known_hosts
-
-      - name: Deploy to Droplet
         run: |
-          doctl compute ssh docker-s-1vcpu-1gb-nyc3-01 --ssh-command "docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest && docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest && docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest && docker-compose up -d"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 104.131.65.252 >> ~/.ssh/known_hosts
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+
+      - name: Install docker-compose and Deploy to Droplet
+        run: |
+          doctl compute ssh docker-s-1vcpu-1gb-nyc3-01 --ssh-command "
+          sudo apt-get update &&
+          sudo apt-get install -y docker-compose &&
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest &&
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest &&
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest &&
+          cd /path/to/your/project &&
+          docker-compose up -d"

@@ -60,8 +60,8 @@ jobs:
         run: |
           echo "Token length:"
           echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | wc -c
-          echo "Masked token (first and last 4 characters):"
-          echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN:0:4}}...${{ secrets.DIGITALOCEAN_ACCESS_TOKEN: -4}}"
+          echo "Token presence check:"
+          echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}"
 
       - name: Log in to DigitalOcean
         run: echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | doctl auth init --access-token -

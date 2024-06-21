@@ -65,37 +65,20 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
 
-      - name: Increase SSH timeout
+      - name: Increase SSH timeout and Install docker-compose
         run: |
-          doctl compute ssh bitcoin --ssh-command "
-          echo 'ClientAliveInterval 60' | sudo tee -a /etc/ssh/sshd_config &&
-          echo 'ClientAliveCountMax 120' | sudo tee -a /etc/ssh/sshd_config &&
-          sudo service ssh restart"
-
-      - name: Add Swap Space
-        run: |
-          doctl compute ssh bitcoin --ssh-command "
-          sudo fallocate -l 1G /swapfile &&
-          sudo chmod 600 /swapfile &&
-          sudo mkswap /swapfile &&
-          sudo swapon /swapfile &&
-          echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab"
-
-      - name: Install Docker Compose
-        run: |
-          doctl compute ssh bitcoin --ssh-command "
+          echo "Host *" > ~/.ssh/config
+          echo "  ServerAliveInterval 60" >> ~/.ssh/config
+          echo "  ServerAliveCountMax 120" >> ~/.ssh/config
+          doctl compute ssh bitcoin-explorer-droplet --ssh-command "
           sudo apt-get update &&
           sudo apt-get install -y docker-compose"
-
-      - name: Pull Docker Images
-        run: |
-          doctl compute ssh bitcoin --ssh-command "
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest"
 
       - name: Deploy Docker Containers
         run: |
           doctl compute ssh bitcoin --ssh-command "
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest &&
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest &&
+          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest &&
           cd /root/info7500-crypto-1 &&
           docker-compose up -d"

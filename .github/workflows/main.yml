@@ -70,7 +70,7 @@ jobs:
           echo "Host *" > ~/.ssh/config
           echo "  ServerAliveInterval 60" >> ~/.ssh/config
           echo "  ServerAliveCountMax 120" >> ~/.ssh/config
-          doctl compute ssh bitcoin-explorer-droplet --ssh-command "
+          doctl compute ssh bitcoin --ssh-command "
           sudo apt-get update &&
           sudo apt-get install -y docker-compose"
 

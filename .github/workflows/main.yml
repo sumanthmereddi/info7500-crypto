@@ -51,24 +51,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install doctl
-        run: |
-          curl -sL https://github.com/digitalocean/doctl/releases/download/v1.65.0/doctl-1.65.0-linux-amd64.tar.gz | tar -xzv
-          sudo mv doctl /usr/local/bin
-
-      - name: Check DigitalOcean Token Length
-        run: |
-          echo "Token length:"
-          echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | wc -c
-
-      - name: Log in to DigitalOcean
-        run: echo "${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}" | doctl auth init --access-token -
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Deploy to Droplet
         run: |
-          doctl compute ssh docker-s-1vcpu-1gb-nyc3-01 --ssh-command "
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest &&
-          docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest &&
-          cd /path/to/your/project &&
-          docker-compose up -d"
+          doctl compute ssh docker-s-1vcpu-1gb-nyc3-01 --ssh-command "docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest && docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest && docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest && docker-compose up -d"

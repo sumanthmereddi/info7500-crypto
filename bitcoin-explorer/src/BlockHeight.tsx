@@ -34,15 +34,15 @@ const BlockHeight: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const blockHeightResponse = await axios.get('http://localhost:4000/api/block-height');
+        const blockHeightResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/block-height`);
         setBlockData(blockHeightResponse.data);
 
-        const lastBlocksResponse = await axios.get('http://localhost:4000/api/last-blocks');
+        const lastBlocksResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/last-blocks`);
         setLastBlocks(lastBlocksResponse.data);
         const timestamps = lastBlocksResponse.data.map((block: BlockData) => new Date(block.timestamp).toLocaleString());
         setTimestampHistory(timestamps);
 
-        const offChainMetricsResponse = await axios.get('http://localhost:4000/api/off-chain-metrics');
+        const offChainMetricsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/off-chain-metrics`);
         setOffChainMetrics(offChainMetricsResponse.data);
         setPriceHistory((prev) => [...prev, offChainMetricsResponse.data.price]);
         setMarketCapHistory((prev) => [...prev, offChainMetricsResponse.data.marketCap]);

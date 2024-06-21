@@ -56,6 +56,14 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add DigitalOcean Droplet to known hosts
+        run: ssh-keyscan -H <YOUR_DROPLET_IP> >> ~/.ssh/known_hosts
+
       - name: Deploy to Droplet
         run: |
           doctl compute ssh docker-s-1vcpu-1gb-nyc3-01 --ssh-command "docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest && docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest && docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest && docker-compose up -d"

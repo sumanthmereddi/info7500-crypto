@@ -61,7 +61,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 104.131.65.252 >> ~/.ssh/known_hosts
+          ssh-keyscan -H <YOUR_DROPLET_IP> >> ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
 
@@ -73,5 +73,5 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-backend:latest &&
           docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-explorer-frontend:latest &&
           docker pull ${{ secrets.DOCKER_USERNAME }}/bitcoin-ingestion:latest &&
-          cd /path/to/your/project &&
+          cd /root/info7500-crypto-1 &&
           docker-compose up -d"

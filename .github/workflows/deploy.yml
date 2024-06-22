@@ -53,3 +53,22 @@ jobs:
           systemctl enable docker
 
           # Install Docker Compose
+          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+
+          # Ensure deployment directory exists
+          mkdir -p /root/deployment
+
+          # Copy docker-compose.yml to the correct location
+          cp /github/workspace/docker-compose.yml /root/deployment/docker-compose.yml
+
+          # Navigate to deployment directory
+          cd /root/deployment
+
+          # Pull Docker images
+          docker pull ${{ secrets.DOCKER_REPO }}:backend
+          docker pull ${{ secrets.DOCKER_REPO }}:frontend
+          docker pull ${{ secrets.DOCKER_REPO }}:ingestion
+
+          # Start services using Docker Compose
+          docker-compose up -d

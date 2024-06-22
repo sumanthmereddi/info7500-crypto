@@ -36,6 +36,9 @@ jobs:
     needs: build
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Deploy to Digital Ocean
       uses: appleboy/ssh-action@v0.1.5
       with:
@@ -50,16 +53,3 @@ jobs:
           systemctl enable docker
 
           # Install Docker Compose
-          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          chmod +x /usr/local/bin/docker-compose
-
-          # Copy docker-compose.yml to the correct location
-          scp /github/workspace/docker-compose.yml root@${{ secrets.DROPLET_IP }}:/root/docker-compose.yml
-
-          # Pull Docker images
-          docker pull ${{ secrets.DOCKER_REPO }}:backend
-          docker pull ${{ secrets.DOCKER_REPO }}:frontend
-          docker pull ${{ secrets.DOCKER_REPO }}:ingestion
-
-          # Start services using Docker Compose
-          docker-compose -f /root/docker-compose.yml up -d

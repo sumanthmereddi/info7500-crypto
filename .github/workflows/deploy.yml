@@ -59,14 +59,15 @@ jobs:
           # Ensure deployment directory exists
           mkdir -p /root/deployment
 
-    - name: Copy docker-compose.yml to Droplet
+    - name: Copy project files to Droplet
       uses: appleboy/scp-action@v0.1.0
       with:
-        source: 'docker-compose.yml'
-        target: '/root/deployment/docker-compose.yml'
+        source: './*'
+        target: '/root/deployment/'
         host: ${{ secrets.DROPLET_IP }}
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        strip_components: 1
 
     - name: Run Docker Compose
       uses: appleboy/ssh-action@v0.1.5

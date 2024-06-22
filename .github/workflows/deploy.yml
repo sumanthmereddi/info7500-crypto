@@ -50,9 +50,7 @@ jobs:
         username: root
         key: ${{ secrets.DROPLET_PRIVATE_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/backend:latest
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:latest
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/bitcoin_ingestion:latest
           cd /home/project
           docker-compose down
+          docker-compose pull
           docker-compose up -d

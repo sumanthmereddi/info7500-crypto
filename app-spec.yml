@@ -38,6 +38,7 @@ databases:
   version: "14"
   size: db-s-1vcpu-1gb
   num_nodes: 1
+  production: true
   user: user
   password: bit
-  database: bitcoin_explorer
+  dbname: bitcoin_explorer

@@ -59,16 +59,24 @@ jobs:
           # Ensure deployment directory exists
           mkdir -p /root/deployment
 
-          # Copy docker-compose.yml to the correct location
-          cp /github/workspace/docker-compose.yml /root/deployment/docker-compose.yml
+    - name: Copy docker-compose.yml to Droplet
+      uses: appleboy/scp-action@v0.1.0
+      with:
+        source: 'docker-compose.yml'
+        target: '/root/deployment/docker-compose.yml'
+        host: ${{ secrets.DROPLET_IP }}
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-          # Navigate to deployment directory
+    - name: Run Docker Compose
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
           cd /root/deployment
-
-          # Pull Docker images
           docker pull ${{ secrets.DOCKER_REPO }}:backend
           docker pull ${{ secrets.DOCKER_REPO }}:frontend
           docker pull ${{ secrets.DOCKER_REPO }}:ingestion
-
-          # Start services using Docker Compose
-          docker-compose -f /root/deployment/docker-compose.yml up -d
+          docker-compose up -d

@@ -71,4 +71,4 @@ jobs:
           docker pull ${{ secrets.DOCKER_REPO }}:ingestion
 
           # Start services using Docker Compose
-          docker-compose up -d
+          docker-compose -f /root/deployment/docker-compose.yml up -d

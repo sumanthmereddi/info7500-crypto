@@ -3,7 +3,6 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const axios = require('axios');
 
-
 const app = express();
 const port = 4000;
 
@@ -15,8 +14,6 @@ const pool = new Pool({
   password: 'bit',
   port: 5432,
 });
-
-
 
 app.use(cors());
 

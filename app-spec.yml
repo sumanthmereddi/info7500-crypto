@@ -38,7 +38,6 @@ databases:
   version: "14"
   size: db-s-1vcpu-1gb
   num_nodes: 1
-  region: nyc1
   settings:
     user: user
     password: bit

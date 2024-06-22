@@ -43,7 +43,20 @@ jobs:
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          # Install Docker
+          apt-get update
+          apt-get install -y docker.io
+          systemctl start docker
+          systemctl enable docker
+
+          # Install Docker Compose
+          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+          
+          # Pull Docker images
           docker pull ${{ secrets.DOCKER_REPO }}:backend
           docker pull ${{ secrets.DOCKER_REPO }}:frontend
           docker pull ${{ secrets.DOCKER_REPO }}:ingestion
+          
+          # Start services using Docker Compose
           docker-compose -f /path/to/your/docker-compose.yml up -d

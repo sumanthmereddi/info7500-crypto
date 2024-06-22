@@ -15,10 +15,8 @@ interface OffChainMetrics {
   marketCap: number;
   socialMediaMentions: number;
   percentChange: number;
-  open: number;
   high: number;
   low: number;
-  close: number;
 }
 
 const BlockHeight: React.FC = () => {
@@ -28,35 +26,48 @@ const BlockHeight: React.FC = () => {
   const [priceHistory, setPriceHistory] = useState<number[]>([]);
   const [marketCapHistory, setMarketCapHistory] = useState<number[]>([]);
   const [timestampHistory, setTimestampHistory] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const blockHeightResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/block-height`);
-        setBlockData(blockHeightResponse.data);
-
-        const lastBlocksResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/last-blocks`);
-        setLastBlocks(lastBlocksResponse.data);
-        const timestamps = lastBlocksResponse.data.map((block: BlockData) => new Date(block.timestamp).toLocaleString());
-        setTimestampHistory(timestamps);
-
-        const offChainMetricsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/off-chain-metrics`);
-        setOffChainMetrics(offChainMetricsResponse.data);
-        setPriceHistory((prev) => [...prev, offChainMetricsResponse.data.price]);
-        setMarketCapHistory((prev) => [...prev, offChainMetricsResponse.data.marketCap]);
-
-        setLoading(false);
+        const response = await axios.get('http://localhost:4000/api/block-height');
+        setBlockData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again later.');
-        setLoading(false);
+      }
+    };
+
+    const fetchLastBlocks = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/last-blocks');
+        setLastBlocks(response.data);
+        const timestamps = response.data.map((block: BlockData) => new Date(block.timestamp).toLocaleString());
+        setTimestampHistory(timestamps);
+      } catch (error) {
+        console.error('Error fetching last blocks:', error);
+      }
+    };
+
+    const fetchOffChainMetrics = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/off-chain-metrics');
+        setOffChainMetrics(response.data);
+        setPriceHistory((prev) => [...prev, response.data.price]);
+        setMarketCapHistory((prev) => [...prev, response.data.marketCap]);
+      } catch (error) {
+        console.error('Error fetching off-chain metrics:', error);
       }
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 60000); // Update every minute
+    fetchLastBlocks();
+    fetchOffChainMetrics();
+
+    const interval = setInterval(() => {
+      fetchData();
+      fetchLastBlocks();
+      fetchOffChainMetrics();
+    }, 60000); // Update every minute
     return () => clearInterval(interval);
   }, []);
 
@@ -122,24 +133,18 @@ const BlockHeight: React.FC = () => {
   return (
     <div className="container">
       <h1 className="title">Current Block Data</h1>
-      {loading ? (
-        <p className="loading">Loading...</p>
-      ) : error ? (
-        <p className="error">{error}</p>
-      ) : blockData ? (
+      {blockData ? (
         <div className="block-data">
           <p>Block ID: {blockData.id}</p>
           <p>Block Height: {blockData.block_height}</p>
           <p>Timestamp: {new Date(blockData.timestamp).toLocaleString()}</p>
         </div>
       ) : (
-        <p className="loading">No block data available</p>
+        <p className="loading">Loading...</p>
       )}
 
       <h2 className="subtitle">Last 5 Blocks</h2>
-      {loading ? (
-        <p className="loading">Loading...</p>
-      ) : lastBlocks.length > 0 ? (
+      {lastBlocks.length > 0 ? (
         <table className="blocks-table">
           <thead>
             <tr>
@@ -159,61 +164,36 @@ const BlockHeight: React.FC = () => {
           </tbody>
         </table>
       ) : (
-        <p className="loading">No blocks available</p>
+        <p className="loading">Loading...</p>
       )}
 
       <h2 className="subtitle">Off-Chain Metrics</h2>
-      {loading ? (
-        <p className="loading">Loading...</p>
-      ) : offChainMetrics ? (
+      {offChainMetrics ? (
         <div className="off-chain-metrics">
           <p>Bitcoin Price: ${offChainMetrics.price?.toFixed(2)}</p>
           <p>Bitcoin Market Cap: ${offChainMetrics.marketCap?.toFixed(2)}</p>
           <p>Percentage Change: {offChainMetrics.percentChange?.toFixed(2)}%</p>
-          <p>24h Open: ${offChainMetrics.open?.toFixed(2)}</p>
           <p>24h High: ${offChainMetrics.high?.toFixed(2)}</p>
           <p>24h Low: ${offChainMetrics.low?.toFixed(2)}</p>
-          <p>24h Close: ${offChainMetrics.close?.toFixed(2)}</p>
           <p>Social Media Mentions: {offChainMetrics.socialMediaMentions}</p>
         </div>
       ) : (
-        <p className="loading">No off-chain metrics available</p>
+        <p className="loading">Loading...</p>
       )}
 
       <h2 className="subtitle">Bitcoin Price History</h2>
       <div className="chart-container">
-        <Line
-          data={priceData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 2000, easing: 'easeInOutBounce' },
-          }}
-        />
+        <Line data={priceData} options={{ responsive: true, maintainAspectRatio: false, animation: { duration: 2000, easing: 'easeInOutBounce' } }} />
       </div>
 
       <h2 className="subtitle">Bitcoin Market Cap History</h2>
       <div className="chart-container">
-        <Line
-          data={marketCapData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 2000, easing: 'easeInOutBounce' },
-          }}
-        />
+        <Line data={marketCapData} options={{ responsive: true, maintainAspectRatio: false, animation: { duration: 2000, easing: 'easeInOutBounce' } }} />
       </div>
 
       <h2 className="subtitle">Block Height Distribution</h2>
       <div className="chart-container">
-        <Bar
-          data={blockHeightDistribution}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 2000, easing: 'easeInOutBounce' },
-          }}
-        />
+        <Bar data={blockHeightDistribution} options={{ responsive: true, maintainAspectRatio: false, animation: { duration: 2000, easing: 'easeInOutBounce' } }} />
       </div>
     </div>
   );

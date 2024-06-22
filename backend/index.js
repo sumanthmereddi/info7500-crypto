@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const axios = require('axios');
 
+
 const app = express();
 const port = 4000;
 
@@ -15,12 +16,9 @@ const pool = new Pool({
   port: 5432,
 });
 
-app.use(cors());
 
-// Root URL handler
-app.get('/', (req, res) => {
-  res.send('Welcome to the Bitcoin Explorer API');
-});
+
+app.use(cors());
 
 app.get('/api/block-height', async (req, res) => {
   try {
@@ -48,21 +46,19 @@ app.get('/api/last-blocks', async (req, res) => {
 
 app.get('/api/off-chain-metrics', async (req, res) => {
   try {
-    const [coinPaprikaTickerResponse, coinPaprikaOHLCVResponse] = await Promise.all([
+    const [coinPaprikaResponse, ohlcvResponse] = await Promise.all([
       axios.get('https://api.coinpaprika.com/v1/tickers/btc-bitcoin'),
       axios.get('https://api.coinpaprika.com/v1/coins/btc-bitcoin/ohlcv/today')
     ]);
 
-    const price = coinPaprikaTickerResponse.data.quotes.USD.price;
-    const marketCap = coinPaprikaTickerResponse.data.quotes.USD.market_cap;
-    const percentChange = coinPaprikaTickerResponse.data.quotes.USD.percent_change_24h;
-    const high = coinPaprikaOHLCVResponse.data[0].high;
-    const low = coinPaprikaOHLCVResponse.data[0].low;
-    const open = coinPaprikaOHLCVResponse.data[0].open;
-    const close = coinPaprikaOHLCVResponse.data[0].close;
+    const price = coinPaprikaResponse.data.quotes.USD.price;
+    const marketCap = coinPaprikaResponse.data.quotes.USD.market_cap;
+    const percentChange = coinPaprikaResponse.data.quotes.USD.percent_change_24h;
+    const high = ohlcvResponse.data[0].high;
+    const low = ohlcvResponse.data[0].low;
     const socialMediaMentions = 1200; // Static value for demo purposes
 
-    res.json({ price, marketCap, percentChange, open, high, low, close, socialMediaMentions });
+    res.json({ price, marketCap, percentChange, high, low, socialMediaMentions });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });

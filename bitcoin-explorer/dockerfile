@@ -1,14 +1,11 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14 AS build
+# Use the official Node.js image as a base
+FROM node:14 as build
 
-# Set the working directory
-WORKDIR /usr/src/app
+# Set the working directory inside the container
+WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
-
-# Copy .env file
-COPY .env .env
 
 # Install dependencies
 RUN npm install
@@ -16,17 +13,17 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the application
+# Build the React app
 RUN npm run build
 
-# Use an official NGINX image to serve the app
+# Use a lightweight web server to serve the React app
 FROM nginx:alpine
 
-# Copy the build output to the NGINX html directory
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+# Copy the build output to the Nginx HTML directory
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose the port NGINX runs on
+# Expose the port the app runs on
 EXPOSE 80
 
-# Command to run NGINX
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

@@ -60,7 +60,7 @@ jobs:
       - name: Deploy to DigitalOcean
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP }} "
-            cd /path/to/your/project &&
+            cd /root/info7500-crypto &&
             docker-compose pull &&
             docker-compose up -d
           "
